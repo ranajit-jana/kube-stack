@@ -1,0 +1,9 @@
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkSet
+metadata:
+  name: vpc-local
+  labels:
+    role: vpc
+spec:
+  nets:
+  - 10.170.0.0/21

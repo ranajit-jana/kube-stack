@@ -1,0 +1,14 @@
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: 11-i-allow-prometheus
+spec:
+  order: 11
+  selector: all() 
+
+  types:
+    - Ingress
+  ingress:
+    - action: Allow
+      source:
+        selector: app == "prometheus"

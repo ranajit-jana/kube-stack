@@ -1,0 +1,21 @@
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: <order>-[ei]-(allow|deny)-<description>
+spec:
+  order: #
+  # There are several
+  # Select all pods: all()
+  # Label: my_label == "string"
+  #        my_label != "string" # note: this matches missing labels as well
+  #
+  selector: all() 
+
+  # Filter on namespace labels
+  # namespaceSelector: 
+  types:
+    - Ingress
+    - Egress
+  ingress:
+
+  egress: 

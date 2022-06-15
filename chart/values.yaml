@@ -1,0 +1,10 @@
+# Global Values
+repoUrl: "https://github.com/ranajit-jana/kube-stack.git"
+targetRevision: HEAD
+region: ""
+account: ""
+clusterName: ""
+
+# Calico Values
+calico: 
+  enable: true

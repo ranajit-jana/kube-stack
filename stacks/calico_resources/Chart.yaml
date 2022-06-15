@@ -1,0 +1,7 @@
+apiVersion: v2
+name: calico-resources
+description: Calico Custom Resources
+
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
