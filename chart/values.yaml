@@ -6,5 +6,11 @@ account: ""
 clusterName: ""
 
 # Calico Values
-calico: 
+calico:
+  enable: true
+
+calico_resources:
+  enable: true
+
+calico_rules:
   enable: true
