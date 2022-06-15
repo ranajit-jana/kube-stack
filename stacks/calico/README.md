@@ -1,3 +1,5 @@
+This is latest calico chart from aws EKS - we see this chart is not mantained and we need to switch to calico operator 
+
 # Important Announcement: AWS EKS will no longer maintain and update Calico charts in this repository #
 - The current Calico charts will not be updated
 - The current Calico charts will be removed from this repository on March 31, 2023
