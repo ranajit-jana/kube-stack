@@ -5,7 +5,7 @@ region: ""
 account: ""
 clusterName: "dev-eks"
 
-# Calico Values
+# Charts
 calico:
   enable: true
 
@@ -13,4 +13,4 @@ calico_resources:
   enable: true
 
 calico_rules:
-  enable: true
+  enable: false
