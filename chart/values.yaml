@@ -10,7 +10,7 @@ calico:
   enable: true
 
 calico_resources:
-  enable: true
+  enable: false
 
 calico_rules:
   enable: false
