@@ -24,6 +24,8 @@ Chart.lock
 # Vscode files
 .vscode
 
+.project
+.idea/
 
 # Emacs save files
 *~
@@ -41,3 +43,14 @@ Session.vim
 **/charts/*.tgz
 
 .history
+
+.git/
+.gitignore
+
+
+
+# Common backup files
+*.swp
+*.bak
+*.tmp
+*.orig
