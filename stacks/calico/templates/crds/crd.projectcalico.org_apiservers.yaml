@@ -3,6 +3,7 @@ kind: CustomResourceDefinition
 metadata:
   name: apiservers.operator.tigera.io
   annotations:
+    helm.sh/hook: crd-install
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 spec:
