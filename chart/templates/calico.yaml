@@ -12,6 +12,9 @@ spec:
     repoURL: {{ .Values.repoUrl }}
     path: stacks/calico
     targetRevision: {{ .Values.targetRevision }}
+    helm:
+      values: |
+        installCRDs: true
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
