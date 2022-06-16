@@ -6,3 +6,4 @@ tigeraOperator:
 
 installation:
   kubernetesProvider: "EKS"
+installCRDs: true
