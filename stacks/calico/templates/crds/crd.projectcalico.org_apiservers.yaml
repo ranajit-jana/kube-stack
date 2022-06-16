@@ -5,6 +5,7 @@ metadata:
   annotations:
     "helm.sh/hook": crd-install
     "helm.sh/hook-weight": "-1"
+    argocd.argoproj.io/sync-wave: "-1"
     argocd.argoproj.io/hook: PreSync
     "argocd.argoproj.io/hook-delete-policy": "HookSucceeded"
 spec:
