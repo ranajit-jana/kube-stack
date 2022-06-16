@@ -4,12 +4,11 @@ targetRevision: main
 region: ""
 account: ""
 clusterName: "dev-eks"
-installCRDs: true
+
 
 # Charts
 calico:
   enable: true
-  installCRDs: true
 
 calico_resources:
   enable: false

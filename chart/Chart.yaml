@@ -4,4 +4,3 @@ description: App of Apps for Kubernetes Cluster add-ons
 type: application
 version: 0.0.1
 appVersion: 0.0.1
-installCRDs: true

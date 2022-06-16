@@ -4,8 +4,6 @@ kind: Application
 metadata:
   name: calico
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   project: default
   source:
