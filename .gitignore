@@ -56,3 +56,5 @@ Session.vim
 *.orig
 stacks/tigera-operator/helmfile.txt
 stacks/tigera-operator/helmvalues.txt
+stacks/helminstall.txt
+*.txt
