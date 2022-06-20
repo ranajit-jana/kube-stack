@@ -1,78 +1,4 @@
-Release "calico" does not exist. Installing it now.
-NAME: calico
-LAST DEPLOYED: Mon Jun 20 14:46:05 2022
-NAMESPACE: kube-system
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
-USER-SUPPLIED VALUES:
-{}
-
-COMPUTED VALUES:
-apiServer:
-  enabled: true
-calicoctl:
-  image: docker.io/calico/ctl
-  tag: v3.23.1
-certs:
-  node:
-    cert: null
-    commonName: null
-    key: null
-  typha:
-    caBundle: null
-    cert: null
-    commonName: null
-    key: null
-imagePullSecrets: {}
-installation:
-  calicoNetwork:
-    bgp: Disabled
-    ipPools:
-    - cidr: 192.168.0.0/16
-      encapsulation: VXLAN
-  enabled: true
-  kubernetesProvider: EKS
-resources: {}
-tigeraOperator:
-  image: tigera/operator
-  registry: quay.io
-  version: v1.27.1
-
-HOOKS:
-MANIFEST:
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-# This manifest creates a Pod Disruption Budget for Controller to allow K8s Cluster Autoscaler to evict
-
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: calico-kube-controllers
-  namespace: kube-system
-  labels:
-    k8s-app: calico-kube-controllers
-spec:
-  maxUnavailable: 1
-  selector:
-    matchLabels:
-      k8s-app: calico-kube-controllers
----
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: calico-node
-  namespace: kube-system
----
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: calico-kube-controllers
-  namespace: kube-system
----
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
 # Source: calico/templates/calico-config.yaml
 # This ConfigMap is used to configure a self-hosted Calico installation.
 kind: ConfigMap
@@ -126,8 +52,9 @@ data:
         }
       ]
     }
+
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
+
 # Source: calico/templates/calico-kube-controllers-rbac.yaml
 
 # Include a clusterrole for the kube-controllers component,
@@ -211,8 +138,22 @@ rules:
       - update
       # watch for changes
       - watch
+
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: calico-kube-controllers
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: calico-kube-controllers
+subjects:
+- kind: ServiceAccount
+  name: calico-kube-controllers
+  namespace: kube-system
+
+---
 # Source: calico/templates/calico-node-rbac.yaml
 # Include a clusterrole for the calico-node DaemonSet,
 # and bind it to the calico-node serviceaccount.
@@ -376,22 +317,8 @@ rules:
       - daemonsets
     verbs:
       - get
+
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: calico-kube-controllers
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: calico-kube-controllers
-subjects:
-- kind: ServiceAccount
-  name: calico-kube-controllers
-  namespace: kube-system
----
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -404,8 +331,8 @@ subjects:
 - kind: ServiceAccount
   name: calico-node
   namespace: kube-system
+
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
 # Source: calico/templates/calico-node.yaml
 # This manifest installs the calico-node container, as well
 # as the CNI plugins and network config on
@@ -693,7 +620,14 @@ spec:
             type: DirectoryOrCreate
             path: /var/run/nodeagent
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: calico-node
+  namespace: kube-system
+
+---
 # Source: calico/templates/calico-kube-controllers.yaml
 # See https://github.com/projectcalico/kube-controllers
 apiVersion: apps/v1
@@ -752,35 +686,37 @@ spec:
               - /usr/bin/check-status
               - -r
             periodSeconds: 10
----
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-# Source: calico/templates/calico-etcd-secrets.yaml
----
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-# Source: calico/templates/calico-typha.yaml
----
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-# Source: calico/templates/configure-canal.yaml
----
-# Source: tigera-operator/templates/crs/custom-resources.yaml
-apiVersion: operator.tigera.io/v1
-kind: APIServer
-metadata:
-  name: default
-spec: {}
----
-# Source: tigera-operator/templates/crs/custom-resources.yaml
-apiVersion: operator.tigera.io/v1
-kind: Installation
-metadata:
-  name: default
-spec:
-  kubernetesProvider: EKS
-  cni:
-    type: Calico
-  calicoNetwork:
-    bgp: Disabled
-    ipPools:
-    - cidr: 192.168.0.0/16
-      encapsulation: VXLAN
 
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: calico-kube-controllers
+  namespace: kube-system
+
+---
+
+# This manifest creates a Pod Disruption Budget for Controller to allow K8s Cluster Autoscaler to evict
+
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: calico-kube-controllers
+  namespace: kube-system
+  labels:
+    k8s-app: calico-kube-controllers
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      k8s-app: calico-kube-controllers
+
+---
+# Source: calico/templates/calico-etcd-secrets.yaml
+
+---
+# Source: calico/templates/calico-typha.yaml
+
+---
+# Source: calico/templates/configure-canal.yaml
