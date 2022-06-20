@@ -28,6 +28,8 @@ commonLabels: {}
 # scmhash: abc123
 # myLabel: aakkmd
 
+kubeStateMetrics:
+  enabled: true
 ## Create default rules for monitoring the cluster
 ##
 defaultRules:
