@@ -1,0 +1,32 @@
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: calico-kube-controllers
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-3"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: calico-kube-controllers
+subjects:
+- kind: ServiceAccount
+  name: calico-kube-controllers
+  namespace: kube-system
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: calico-node
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-3"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: calico-node
+subjects:
+- kind: ServiceAccount
+  name: calico-node
+  namespace: kube-system

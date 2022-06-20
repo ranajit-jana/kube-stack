@@ -1,6 +1,6 @@
 Release "calico" does not exist. Installing it now.
 NAME: calico
-LAST DEPLOYED: Mon Jun 20 14:46:05 2022
+LAST DEPLOYED: Mon Jun 20 15:17:56 2022
 NAMESPACE: kube-system
 STATUS: deployed
 REVISION: 1
@@ -40,11 +40,8 @@ tigeraOperator:
   version: v1.27.1
 
 HOOKS:
-MANIFEST:
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-# This manifest creates a Pod Disruption Budget for Controller to allow K8s Cluster Autoscaler to evict
-
+# Source: tigera-operator/templates/tigera-operator/poddistruptbudget.yaml
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
@@ -52,34 +49,45 @@ metadata:
   namespace: kube-system
   labels:
     k8s-app: calico-kube-controllers
+  annotations:
+      "helm.sh/hook": pre-install
+      "helm.sh/hook-weight": "0"
 spec:
   maxUnavailable: 1
   selector:
     matchLabels:
       k8s-app: calico-kube-controllers
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: calico-node
-  namespace: kube-system
----
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
+# Source: tigera-operator/templates/tigera-operator/serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: calico-kube-controllers
   namespace: kube-system
+  labels:
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-4"
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-# Source: calico/templates/calico-config.yaml
-# This ConfigMap is used to configure a self-hosted Calico installation.
+# Source: tigera-operator/templates/tigera-operator/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: calico-node
+  namespace: kube-system
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-4"
+---
+# Source: tigera-operator/templates/tigera-operator/configmap.yaml
 kind: ConfigMap
 apiVersion: v1
 metadata:
   name: calico-config
   namespace: kube-system
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-5"
 data:
   # Typha is disabled.
   typha_service_name: "none"
@@ -127,15 +135,15 @@ data:
       ]
     }
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-# Source: calico/templates/calico-kube-controllers-rbac.yaml
-
-# Include a clusterrole for the kube-controllers component,
-# and bind it to the calico-kube-controllers serviceaccount.
+# Source: tigera-operator/templates/tigera-operator/clusterrole.yaml
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: calico-kube-controllers
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-4"
+
 rules:
   # Nodes are watched to monitor for deletions.
   - apiGroups: [""]
@@ -212,7 +220,7 @@ rules:
       # watch for changes
       - watch
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
+# Source: tigera-operator/templates/tigera-operator/clusterrole.yaml
 # Source: calico/templates/calico-node-rbac.yaml
 # Include a clusterrole for the calico-node DaemonSet,
 # and bind it to the calico-node serviceaccount.
@@ -220,6 +228,10 @@ kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: calico-node
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-4"
+
 rules:
   # The CNI plugin needs to get pods, nodes, and namespaces.
   - apiGroups: [""]
@@ -377,11 +389,14 @@ rules:
     verbs:
       - get
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
+# Source: tigera-operator/templates/tigera-operator/clusterrolebinding.yaml
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: calico-kube-controllers
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-3"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -391,11 +406,14 @@ subjects:
   name: calico-kube-controllers
   namespace: kube-system
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
+# Source: tigera-operator/templates/tigera-operator/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: calico-node
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-3"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -405,11 +423,7 @@ subjects:
   name: calico-node
   namespace: kube-system
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-# Source: calico/templates/calico-node.yaml
-# This manifest installs the calico-node container, as well
-# as the CNI plugins and network config on
-# each master and worker node in a Kubernetes cluster.
+# Source: tigera-operator/templates/tigera-operator/daemonset.yaml
 kind: DaemonSet
 apiVersion: apps/v1
 metadata:
@@ -417,6 +431,9 @@ metadata:
   namespace: kube-system
   labels:
     k8s-app: calico-node
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-2"
 spec:
   selector:
     matchLabels:
@@ -693,9 +710,7 @@ spec:
             type: DirectoryOrCreate
             path: /var/run/nodeagent
 ---
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-# Source: calico/templates/calico-kube-controllers.yaml
-# See https://github.com/projectcalico/kube-controllers
+# Source: tigera-operator/templates/tigera-operator/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -703,6 +718,9 @@ metadata:
   namespace: kube-system
   labels:
     k8s-app: calico-kube-controllers
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-1"
 spec:
   # The controllers can only have a single active instance.
   replicas: 1
@@ -752,15 +770,7 @@ spec:
               - /usr/bin/check-status
               - -r
             periodSeconds: 10
----
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-# Source: calico/templates/calico-etcd-secrets.yaml
----
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-# Source: calico/templates/calico-typha.yaml
----
-# Source: tigera-operator/templates/tigera-operator/calico-vxlan.yaml
-# Source: calico/templates/configure-canal.yaml
+MANIFEST:
 ---
 # Source: tigera-operator/templates/crs/custom-resources.yaml
 apiVersion: operator.tigera.io/v1
