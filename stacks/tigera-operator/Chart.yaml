@@ -9,3 +9,4 @@ sources:
 - https://github.com/tigera/operator
 - https://github.com/projectcalico/calico
 version: v3.23.1
+namespace: kube-system
