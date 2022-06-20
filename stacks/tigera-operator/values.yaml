@@ -2,7 +2,12 @@ imagePullSecrets: {}
 
 installation:
   enabled: true
-  kubernetesProvider: ""
+  kubernetesProvider: EKS
+  calicoNetwork:
+    bgp: Disabled
+    ipPools:
+    - cidr: 192.168.0.0/16
+      encapsulation: VXLAN
 
 apiServer:
   enabled: true

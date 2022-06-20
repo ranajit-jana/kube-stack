@@ -53,9 +53,6 @@ data:
       ]
     }
 
-
-
-
 ---
 
 # Source: calico/templates/calico-kube-controllers-rbac.yaml
@@ -141,6 +138,7 @@ rules:
       - update
       # watch for changes
       - watch
+
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1

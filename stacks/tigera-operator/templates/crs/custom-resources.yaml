@@ -1,19 +1,20 @@
+{{ if .Values.installation.enabled }}
 apiVersion: operator.tigera.io/v1
 kind: Installation
 metadata:
   name: default
 spec:
-  kubernetesProvider: EKS
+  kubernetesProvider: {{ .Values.installation.kubernetesProvider }}
   cni:
     type: Calico
   calicoNetwork:
-    bgp: Disabled
+    bgp: {{ .Values.installation.calicoNetwork.bgp }}
     ipPools:
-    - cidr: 192.168.0.0/16
-      encapsulation: VXLAN
+{{ toYaml  .Values.installation.calicoNetwork.ipPools | indent 4 }}
+
+{{ end }}
 
 {{ if .Values.apiServer.enabled }}
-
 ---
 apiVersion: operator.tigera.io/v1
 kind: APIServer
