@@ -1,3 +1,4 @@
+defaultchart: false
 imagePullSecrets: {}
 
 installation:
@@ -8,6 +9,16 @@ installation:
     ipPools:
     - cidr: 192.168.0.0/16
       encapsulation: VXLAN
+
+
+calico:
+  ipv4:
+    cidr: 192.168.0.0/16
+    vxlan: CrossSubnet
+    ipip: Never
+  ipv6:
+    vxlan: CrossSubnet
+
 
 apiServer:
   enabled: true
@@ -24,6 +35,9 @@ certs:
     caBundle:
 
 resources: {}
+
+configmap:
+  typha_service_name: notNets
 
 # Configuration for the tigera operator
 tigeraOperator:
