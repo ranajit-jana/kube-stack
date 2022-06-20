@@ -1,25 +1,20 @@
-{{ if .Values.installation.enabled }}
-{{ $installSpec := omit .Values.installation "enabled" }}
-{{ $secrets := list }}
-{{ range $name := keys .Values.imagePullSecrets -}}
-{{ $item := dict "name" $name }}
-{{ $secrets = append $secrets $item }}
-{{ end }}
-{{ $_ := set $installSpec "imagePullSecrets" $secrets }}
-
 apiVersion: operator.tigera.io/v1
 kind: Installation
 metadata:
   name: default
 spec:
-{{ $installSpec | toYaml | indent 2 }}
-
-{{ end }}
+  kubernetesProvider: EKS
+  cni:
+    type: Calico
+  calicoNetwork:
+    bgp: Disabled
+    ipPools:
+    - cidr: 192.168.0.0/16
+      encapsulation: VXLAN
 
 {{ if .Values.apiServer.enabled }}
 
 ---
-
 apiVersion: operator.tigera.io/v1
 kind: APIServer
 metadata:
