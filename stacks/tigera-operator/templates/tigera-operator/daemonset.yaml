@@ -186,6 +186,8 @@ spec:
               value: "false"
             - name: FELIX_HEALTHENABLED
               value: "true"
+            - name: FELIX_LOGSEVERITYSCREEN
+              value: "debug"
           securityContext:
             privileged: true
           resources:

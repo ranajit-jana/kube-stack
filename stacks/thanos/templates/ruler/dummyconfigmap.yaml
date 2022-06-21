@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: custom-config-map
+  labels:
+    thanos_alert_config: "1"
+data:
+  custom-external-rules.yaml: |-
+    groups:
+    - name: custom_external_rules_group
+      rules:
+      - alert: custom_alert
+        annotations:
+          description: "add your desc here"
+          summary: "add your summary here"
+        expr: up
+        for: 10m
+        labels:
+          severity: warn

@@ -68,8 +68,13 @@ image:
   pullSecrets: []
 ## @param objstoreConfig The [objstore configuration](https://thanos.io/tip/thanos/storage.md/)
 ## Specify content for objstore.yml
-##
-objstoreConfig: ""
+##  prometheus-kube-prometheus-prometheus-thanos.monitoring.svc.cluster.local:10901
+## 192.168.52.165:10901
+objstoreConfig: |-
+  type: s3
+  config:
+    bucket: prometheus-cloudops-1634
+    endpoint: s3.eu-west-1.amazonaws.com
 ## @param indexCacheConfig The [index cache configuration](https://thanos.io/tip/components/store.md/)
 ## Specify content for index-cache.yml
 ##
@@ -111,7 +116,7 @@ query:
   enabled: true
   ## @param query.logLevel Thanos Query log level
   ##
-  logLevel: info
+  logLevel: debug
   ## @param query.logFormat Thanos Query log format
   ##
   logFormat: logfmt
@@ -129,7 +134,8 @@ query:
     sidecarsNamespace: ""
   ## @param query.stores Statically configure store APIs to connect with Thanos Query
   ##
-  stores: []
+  stores:
+    - dnssrv+_grpc._tcp.prometheus-kube-prometheus-prometheus-thanos.monitoring.svc.cluster.local:10901
   ## @param query.sdConfig Query Service Discovery Configuration
   ## Specify content for servicediscovery.yml
   ##
@@ -1137,7 +1143,7 @@ queryFrontend:
 bucketweb:
   ## @param bucketweb.enabled Enable/disable Thanos Bucket Web component
   ##
-  enabled: false
+  enabled: true
   ## @param bucketweb.logLevel Thanos Bucket Web log level
   ##
   logLevel: info
@@ -1537,7 +1543,7 @@ bucketweb:
 compactor:
   ## @param compactor.enabled Enable/disable Thanos Compactor component
   ##
-  enabled: false
+  enabled: true
   ## @param compactor.logLevel Thanos Compactor log level
   ##
   logLevel: info
@@ -1944,7 +1950,7 @@ compactor:
 storegateway:
   ## @param storegateway.enabled Enable/disable Thanos Store Gateway component
   ##
-  enabled: false
+  enabled: true
   ## @param storegateway.logLevel Thanos Store Gateway log level
   ##
   logLevel: info
@@ -2551,7 +2557,7 @@ storegateway:
 ruler:
   ## @param ruler.enabled Enable/disable Thanos Ruler component
   ##
-  enabled: false
+  enabled: true
   ## @param ruler.logLevel Thanos Ruler log level
   ##
   logLevel: info
@@ -2567,7 +2573,15 @@ ruler:
     enabled: true
   ## @param ruler.alertmanagers Alert managers URLs array
   ##
-  alertmanagers: []
+  alertmanagers:
+    - http://prometheus-kube-prometheus-alertmanager.monitoring.svc.cluster.local:9093
+
+  config: |-
+    groups:
+      - name: "metamonitoring"
+        rules:
+          - alert: "PrometheusDown"
+            expr: absent(up{prometheus="monitoring/prometheus-operator"})
   ## @param ruler.alertmanagersConfig Alert managers configuration
   ## e.g:
   ## alertmanagersConfig:
@@ -2595,7 +2609,7 @@ ruler:
   ## @param ruler.existingConfigmap Name of existing ConfigMap with Ruler configuration
   ## NOTE: This will override ruler.config
   ##
-  existingConfigmap: ""
+  existingConfigmap: "custom-config-map"
   ## @param ruler.extraEnvVars Extra environment variables for Thanos Ruler container
   ## e.g:
   ## extraEnvVars:
@@ -3880,7 +3894,7 @@ minio:
   ## @param minio.enabled Enable/disable MinIO&reg; chart installation
   ## to be used as an objstore for Thanos
   ##
-  enabled: false
+  enabled: true
   ## MinIO&reg; authentication parameters
   ##
   auth:
@@ -3921,3 +3935,7 @@ networkPolicy:
   ##    - {key: role, operator: In, values: [frontend]}
   ##
   explicitNamespacesSelector: {}
+
+
+  bucketweb:
+    enabled: true
