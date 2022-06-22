@@ -13,4 +13,3 @@ stringData:
       endpoint: s3.eu-west-1.amazonaws.com
       trace:
         enable: true
-      aws_sdk_auth: true
