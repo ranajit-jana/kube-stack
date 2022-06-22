@@ -11,3 +11,6 @@ stringData:
     config:
       bucket: prometheus-cloudops-1634
       endpoint: s3.eu-west-1.amazonaws.com
+      trace:
+        enable: true
+      aws_sdk_auth: true

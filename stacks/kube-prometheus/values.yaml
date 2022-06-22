@@ -506,23 +506,28 @@ prometheus:
     pullSecrets: []
   ## Service account for Prometheus to use.
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
-  ##
+  ## arn - arn:aws:iam::143384653512:role/EKS-prometheus-thanos-S3
+  #     automountServiceAccountToken: true
   serviceAccount:
+    create: true
+    name: thanos
+    annotations:
+      eks.amazonaws.com/role-arn: "arn:aws:iam::143384653512:role/EKS-prometheus-thanos-S3"
     ## @param prometheus.serviceAccount.create Specify whether to create a ServiceAccount for Prometheus
     ##
-    create: true
+    #create: true
     ## @param prometheus.serviceAccount.name The name of the ServiceAccount to create
     ## If not set and create is true, a name is generated using the kube-prometheus.prometheus.fullname template
     ##
-    name: ""
+    #name: ""
     ## @param prometheus.serviceAccount.annotations Additional annotations for created Prometheus ServiceAccount
     ## annotations:
     ##   eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT:role/prometheus
     ##
-    annotations: {}
+    #annotations: {}
     ## @param prometheus.serviceAccount.automountServiceAccountToken Automount service account token for the server service account
     ##
-    automountServiceAccountToken: true
+    #automountServiceAccountToken: true
   ## Prometheus pods' Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
   ## @param prometheus.podSecurityContext.enabled Enable security context
@@ -1166,6 +1171,8 @@ prometheus:
     objectStorageConfig:
       secretName: thanos-config
       secretKey: objstore.yml
+      optional: false
+
     ## ref: https://github.com/thanos-io/thanos/blob/main/docs/components/sidecar.md
     ## @param prometheus.thanos.extraVolumeMounts Additional volumeMounts from `prometheus.volumes` for thanos sidecar container
     ## extraVolumeMounts:
