@@ -1257,8 +1257,8 @@ prometheus:
       ## e.g:
       ## nodePort: 30901
       ##
-      #nodePorts:
-      #  grpc: ""
+      nodePorts:
+        grpc: ""
       ## @param prometheus.thanos.service.loadBalancerIP `loadBalancerIP` if service type is `LoadBalancer`
       ## Set the LoadBalancer service type to internal only
       ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
