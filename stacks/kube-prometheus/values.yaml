@@ -1242,8 +1242,8 @@ prometheus:
     ##
     service:
       ## @param prometheus.thanos.service.type Kubernetes service type
-      ##
-      type: ClusterIP
+      ##LoadBalancer or ClusterIP
+      type: LoadBalancer
       ## @param prometheus.thanos.service.ports.grpc Thanos service port
       ##
       ports:
@@ -1251,26 +1251,26 @@ prometheus:
       ## @param prometheus.thanos.service.clusterIP Specific cluster IP when service type is cluster IP. Use `None` to create headless service by default.
       ## Use a "headless" service by default so it returns every pod's IP instead of loadbalancing requests.
       ##
-      clusterIP: None
+      # clusterIP: None
       ## @param prometheus.thanos.service.nodePorts.grpc Specify the nodePort value for the LoadBalancer and NodePort service types.
       ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
       ## e.g:
       ## nodePort: 30901
       ##
-      nodePorts:
-        grpc: ""
+      #nodePorts:
+      #  grpc: ""
       ## @param prometheus.thanos.service.loadBalancerIP `loadBalancerIP` if service type is `LoadBalancer`
       ## Set the LoadBalancer service type to internal only
       ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
       ##
-      loadBalancerIP: ""
+      #loadBalancerIP: ""
       ## @param prometheus.thanos.service.loadBalancerSourceRanges Address that are allowed when svc is `LoadBalancer`
       ## https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
       ## e.g:
       ## loadBalancerSourceRanges:
       ## - 10.10.10.0/24
       ##
-      loadBalancerSourceRanges: []
+      #loadBalancerSourceRanges: []
       ## @param prometheus.thanos.service.annotations Additional annotations for Prometheus service
       ##
       annotations: {}
@@ -1289,7 +1289,7 @@ prometheus:
       ## @param prometheus.thanos.service.externalTrafficPolicy Prometheus service external traffic policy
       ## ref http://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
       ##
-      externalTrafficPolicy: Cluster
+      #externalTrafficPolicy: Cluster
       ## @param prometheus.thanos.service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
       ## If "ClientIP", consecutive client requests will be directed to the same Pod
       ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
@@ -1305,23 +1305,23 @@ prometheus:
     ## Thanos Sidecar installation. Set up the URL
     ## ref: https://kubernetes.io/docs/user-guide/ingress/
     ##
-    ingress:
+    #ingress:
       ## @param prometheus.thanos.ingress.enabled Enable ingress controller resource
       ##
-      enabled: false
+    #  enabled: false
       ## @param prometheus.thanos.ingress.pathType Ingress path type
       ##
-      pathType: ImplementationSpecific
+    #  pathType: ImplementationSpecific
       ## @param prometheus.thanos.ingress.apiVersion Force Ingress API version (automatically detected if not set)
       ##
-      apiVersion: ""
+    #  apiVersion: ""
       ## @param prometheus.thanos.ingress.hostname Default host for the ingress record
       ##
-      hostname: thanos.prometheus.local
+    #  hostname: thanos.prometheus.local
       ## @param prometheus.thanos.ingress.path Default path for the ingress record
       ## NOTE: You may need to set this to '/*' in order to use this with ALB ingress controllers
       ##
-      path: /
+    #  path: /
       ## @param prometheus.thanos.ingress.annotations Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations.
       ## For a full list of possible ingress annotations, please see
       ## ref: https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md
@@ -1332,12 +1332,12 @@ prometheus:
       ## kubernetes.io/ingress.class: nginx
       ## cert-manager.io/cluster-issuer: cluster-issuer-name
       ##
-      annotations: {}
+    #  annotations: {}
       ## @param prometheus.thanos.ingress.ingressClassName IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)
       ## This is supported in Kubernetes 1.18+ and required if you have more than one IngressClass marked as the default for your cluster .
       ## ref: https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/
       ##
-      ingressClassName: ""
+    #  ingressClassName: ""
       ## @param prometheus.thanos.ingress.tls Enable TLS configuration for the host defined at `ingress.hostname` parameter
       ## TLS certificates will be retrieved from a TLS secret with name: `{{- printf "%s-tls" .Values.ingress.hostname }}`
       ## You can:
@@ -1345,10 +1345,10 @@ prometheus:
       ##   - Relay on cert-manager to create it by setting `ingress.certManager=true`
       ##   - Relay on Helm to create self-signed certificates by setting `ingress.selfSigned=true`
       ##
-      tls: false
+    #  tls: false
       ## @param prometheus.thanos.ingress.selfSigned Create a TLS secret for this ingress record using self-signed certificates generated by Helm
       ##
-      selfSigned: false
+    #  selfSigned: false
       ## @param prometheus.thanos.ingress.extraHosts An array with additional hostname(s) to be covered with the ingress record
       ## e.g:
       ## extraHosts:
@@ -1364,7 +1364,7 @@ prometheus:
       ##     serviceName: ssl-redirect
       ##     servicePort: use-annotation
       ##
-      extraPaths: []
+    #  extraPaths: []
       ## @param prometheus.thanos.ingress.extraTls TLS configuration for additional hostname(s) to be covered with this ingress record
       ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
       ## e.g:
@@ -1373,7 +1373,7 @@ prometheus:
       ##     - thanos.prometheus.local
       ##   secretName: thanos.prometheus.local-tls
       ##
-      extraTls: []
+    #  extraTls: []
       ## @param prometheus.thanos.ingress.secrets Custom TLS certificates as secrets
       ## NOTE: 'key' and 'certificate' are expected in PEM format
       ## NOTE: 'name' should line up with a 'secretName' set further up
@@ -1393,11 +1393,11 @@ prometheus:
       ##       ...
       ##       -----END CERTIFICATE-----
       ##
-      secrets: []
+    #  secrets: []
       ## @param prometheus.thanos.ingress.extraRules The list of additional rules to be added to this ingress record. Evaluated as a template
       ## Useful when looking for additional customization, such as using different backend
       ##
-      extraRules: []
+    #  extraRules: []
   ## @param prometheus.portName Port name used for the pods and governing service. This defaults to web
   ##
   portName: web
