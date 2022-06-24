@@ -1242,8 +1242,8 @@ prometheus:
     ##
     service:
       ## @param prometheus.thanos.service.type Kubernetes service type
-      ##LoadBalancer or ClusterIP
-      type: LoadBalancer
+      ## LoadBalancer or ClusterIP
+      type: ClusterIP
       ## @param prometheus.thanos.service.ports.grpc Thanos service port
       ##
       ports:
