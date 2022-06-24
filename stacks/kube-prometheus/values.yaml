@@ -1308,7 +1308,7 @@ prometheus:
     ingress:
       ## @param prometheus.thanos.ingress.enabled Enable ingress controller resource
       ##
-      enabled: true
+      enabled: false
       ## @param prometheus.thanos.ingress.pathType Ingress path type
       ##
     #  pathType: ImplementationSpecific
