@@ -35,7 +35,7 @@ query:
     sidecarsService: "prometheus-kube-prometheus-prometheus-thanos"
     sidecarsNamespace: "monitoring"
   stores:
-  - dnssrv+_grpc._tcp.192.168.255.144:10901
+  - dnssrv+_grpc._tcp.prometheus-kube-prometheus-prometheus-thanos.monitoring.svc.cluster.local:10901
   sdConfig: ""
   existingSDConfigmap: ""
   extraEnvVars: []
