@@ -482,17 +482,13 @@ plugins: []
 ## ref: http://docs.grafana.org/administration/provisioning/#datasources
 ##
 datasources:
-  name: thanos-query-frontend
-  type: prometheus
-  url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
-#  datasources.yaml:
-#    apiVersion: 1
-#    datasources:
-#    - name: Prometheus
-#      type: prometheus
-#      url: http://prometheus-prometheus-server
-#      access: proxy
-#      isDefault: true
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      name: thanos-query-frontend
+      type: prometheus
+      url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
+      isDefault: true
 #    - name: CloudWatch
 #      type: cloudwatch
 #      access: proxy
@@ -756,7 +752,7 @@ sidecar:
     # Sets the size limit of the dashboard sidecar emptyDir volume
     sizeLimit: {}
   datasources:
-    enabled: false
+    enabled: true
     # label that the configmaps with datasources are marked with
     label: grafana_datasource
     # value of label that the configmaps with datasources are set to
