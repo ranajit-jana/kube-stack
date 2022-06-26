@@ -481,7 +481,10 @@ plugins: []
 ## Configure grafana datasources
 ## ref: http://docs.grafana.org/administration/provisioning/#datasources
 ##
-datasources: {}
+datasources:
+  - name: thanos-query-frontend
+    url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
+    isDefault: true
 #  datasources.yaml:
 #    apiVersion: 1
 #    datasources:
