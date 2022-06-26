@@ -335,7 +335,7 @@ initChownData:
 
 # Administrator credentials when not using an existing secret (see below)
 adminUser: admin
-# adminPassword: strongpassword
+adminPassword: strongpassword
 
 # Use an existing secret for the admin user.
 admin:
@@ -522,18 +522,18 @@ notifiers: {}
 ##
 ## `path` must be /var/lib/grafana/dashboards/<provider_name>
 ##
-dashboardProviders: {}
-#  dashboardproviders.yaml:
-#    apiVersion: 1
-#    providers:
-#    - name: 'default'
-#      orgId: 1
-#      folder: ''
-#      type: file
-#      disableDeletion: false
-#      editable: true
-#      options:
-#        path: /var/lib/grafana/dashboards/default
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+    - name: 'default'
+      orgId: 1
+      folder: ''
+      type: file
+      disableDeletion: false
+      editable: true
+      options:
+        path: /var/lib/grafana/dashboards/default
 
 ## Configure grafana dashboard to import
 ## NOTE: To use dashboards you must also enable/configure dashboardProviders
@@ -541,7 +541,34 @@ dashboardProviders: {}
 ##
 ## dashboards per provider, use provider name as key.
 ##
-dashboards: {}
+dashboards:
+  default:
+    kubernetes-cluster:
+      gnetId: 7249
+      datasource: Prometheus
+    kubernetes-cluster-monitoring-prometheus:
+      gnetId: 1621
+      datasource: Prometheus
+    kubernetes-all-nodes:
+      gnetId: 3131
+      datasource: Prometheus
+    kubernetes-pods:
+      gnetId: 3146
+      datasource: Prometheus
+    prometheus-stats:
+      gnetId: 2
+      revision: 2
+      datasource: Prometheus
+    kubernetes-statefulset:
+      gnetId: 8588
+      datasource: Prometheus
+    node-exporter:
+      gnetId: 6945
+      datasource: Prometheus
+    k8s-dashboard:
+      gnetId: 15661
+      datasource: Prometheus
+
   # default:
   #   some-dashboard:
   #     json: |
@@ -665,7 +692,7 @@ sidecar:
   readinessProbe: {}
   livenessProbe: {}
   dashboards:
-    enabled: false
+    enabled: true
     SCProvider: true
     # label that the configmaps with dashboards are marked with
     label: grafana_dashboard
