@@ -418,13 +418,13 @@ bucketweb:
     path: /
     pathType: ImplementationSpecific
 compactor:
-  enabled: false
+  enabled: true
   logLevel: info
   logFormat: logfmt
-  retentionResolutionRaw: 30d
-  retentionResolution5m: 30d
-  retentionResolution1h: 10y
-  consistencyDelay: 30m
+  retentionResolutionRaw: 3d
+  retentionResolution5m: 3d
+  retentionResolution1h: 1y
+  consistencyDelay: 3m
   extraEnvVars: []
   extraEnvVarsCM: ""
   extraEnvVarsSecret: ""
@@ -504,8 +504,8 @@ compactor:
     labelSelectorsOverride: {}
   automountServiceAccountToken: true
   serviceAccount:
-    create: true
-    name: ""
+    create: false
+    name: "thanos"
     annotations: {}
     automountServiceAccountToken: true
   ingress:

@@ -568,6 +568,13 @@ dashboards:
     k8s-dashboard:
       gnetId: 15661
       datasource: Prometheus
+    openfaas-dashboard:
+      gnetId: 3526
+      revision: 2
+      datasource: Prometheus
+    calico-dashboard:
+      gnetId: 3244
+      datasource: Prometheus
 
   # default:
   #   some-dashboard:
