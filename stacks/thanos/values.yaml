@@ -969,7 +969,7 @@ receiveDistributor:
   enabled: false
   logLevel: info
   logFormat: logfmt
-  replicaLabel: replica
+  replicaLabel: cluster
   replicationFactor: 1
   extraEnvVars: []
   extraEnvVarsCM: ""
