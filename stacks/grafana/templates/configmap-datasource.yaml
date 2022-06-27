@@ -12,7 +12,7 @@ metadata:
     datasources.yaml: |
       apiVersion: 1
       datasources:
-        isDefault: true
-        name: thanos-query-frontend
+      - name: thanos-query-frontend
         type: prometheus
         url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
+        isDefault: true

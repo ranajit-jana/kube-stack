@@ -485,13 +485,13 @@ datasources:
   # name: thanos-query-frontend
   # type: prometheus
   # url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
-  datasources.yaml:
-    apiVersion: 1
-    datasources:
-      name: thanos-query-frontend
-      type: prometheus
-      url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
-      isDefault: true
+  # datasources.yaml:
+  #   apiVersion: 1
+  #   datasources:
+  #     name: thanos-query-frontend
+  #     type: prometheus
+  #     url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
+  #     isDefault: true
 #    - name: CloudWatch
 #      type: cloudwatch
 #      access: proxy
@@ -757,7 +757,7 @@ sidecar:
   datasources:
     enabled: false
     # label that the configmaps with datasources are marked with
-    label: grafana
+    label: grafana_datasource
     # value of label that the configmaps with datasources are set to
     labelValue: null
     # If specified, the sidecar will search for datasource config-maps inside this namespace.
