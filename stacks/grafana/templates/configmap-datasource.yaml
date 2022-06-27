@@ -8,11 +8,11 @@ metadata:
   annotations:
     "helm.sh/hook": pre-install
     "helm.sh/hook-weight": "-1"
-  data:
-    datasources.yaml: |
-      apiVersion: 1
-      datasources:
-      - name: thanos-query-frontend
-        type: prometheus
-        url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
-        isDefault: true
+data:
+  datasources.yaml: |-
+    apiVersion: 1
+    datasources:
+    - name: thanos-query-frontend
+      type: prometheus
+      url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
+      isDefault: true
