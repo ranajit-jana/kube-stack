@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana
+  namespace: monitoring
+  labels:
+   grafana_datasource: "1"
+  data:
+{{- if .Values.datasources }}
+{{ $root := . }}
+{{- range $key, $value := .Values.datasources }}
+{{ $key }}: |
+{{ tpl (toYaml $value | indent 4) $root }}
+{{- end -}}
+{{- end -}}
+    # datasources.yaml: |
+    #   apiVersion: 1
+    #   datasources:
+    #     isDefault: true
+    #     name: thanos-query-frontend
+    #     type: prometheus
+    #     url: http://thanos-query-frontend.monitoring.svc.cluster.local:9090
