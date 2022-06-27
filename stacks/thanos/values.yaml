@@ -34,7 +34,9 @@ query:
     enabled: true
     sidecarsService: "prometheus-kube-prometheus-prometheus-thanos"
     sidecarsNamespace: "monitoring"
-  stores:
+  stores: []
+  # the stores are not needed to be given as it is autodiscovering based on StoreAPI. Uncomment if the same is not discovered
+  # stores:
   #- dnssrv+_grpc._tcp.prometheus-kube-prometheus-prometheus-thanos.monitoring.svc.cluster.local:10901
   #- dnssrv+_grpc._tcp.thanos-storegateway.monitoring.svc.cluster.local:10901
   sdConfig: ""
