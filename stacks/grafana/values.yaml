@@ -755,9 +755,9 @@ sidecar:
     # Sets the size limit of the dashboard sidecar emptyDir volume
     sizeLimit: {}
   datasources:
-    enabled: true
+    enabled: false
     # label that the configmaps with datasources are marked with
-    label: grafana_datasource
+    label: grafana
     # value of label that the configmaps with datasources are set to
     labelValue: null
     # If specified, the sidecar will search for datasource config-maps inside this namespace.

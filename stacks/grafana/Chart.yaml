@@ -16,6 +16,9 @@ maintainers:
 - email: mail@torstenwalter.de
   name: torstenwalter
 name: grafana
+labels:
+- grafana_datasource: "1"
+- grafana_dashboard: "1"
 sources:
 - https://github.com/grafana/grafana
 type: application
