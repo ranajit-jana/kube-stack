@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana
+  name: grafana_datasource
   namespace: monitoring
   labels:
    grafana_datasource: "1"
